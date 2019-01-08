@@ -24,20 +24,21 @@ class GetImageData {
     async getData(cid: string, searchTerm: string) {
         console.log(`cid: ${cid}, searchTerm: ${searchTerm}`);
         // http://localhost:9903/v1/products?cid=5af1da5746e0fb000ca0c357&search=T2
+        // http://10.10.21.129:9903
+        const hostName = 'http://hackman.zmags.com:9903';
         const searchSlug = searchTerm ? searchTerm.length > 0 ? `&search=${searchTerm}` : '' : '';
         console.log(`http://hackman.zmags.com:9903/v1/products?cid=${cid}${searchSlug}`);
         let response = await fetch(
-            `http://hackman.zmags.com:9903/v1/products?cid=${cid}${searchSlug}`,
+            `${hostName}/v1/products?cid=${cid}${searchSlug}`,
             {
-                method: 'get',
-                mode: 'no-cors'
+                method: 'get'
             });
 
         return await response.json();
     }
 }
 
-export class ImageModal extends React.Component<any, State> {
+export class MainModal extends React.Component<any, State> {
     constructor(props:any) {
         super(props);
 
@@ -64,6 +65,10 @@ export class ImageModal extends React.Component<any, State> {
 
     submitSearch (searchString: string) {
         console.log(searchString);
+        this.setState({
+            ...this.state,
+            imageData: null
+        });
         const getImgData = new GetImageData();
         const companyId = this.state.companyId ? this.state.companyId : '5ab004e746e0fb000c52f5bf';
         getImgData.getData(companyId, searchString).then((data) => {
@@ -89,6 +94,9 @@ export class ImageModal extends React.Component<any, State> {
 
         getImgData.getData(companyId, '').then((data) => {
             console.log(data);
+            if (data.length > 200) {
+                data = data.slice(0, 200)
+            }
             this.setState({
                 ...this.state,
                 imageData: data,
