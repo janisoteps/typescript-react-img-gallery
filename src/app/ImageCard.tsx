@@ -9,12 +9,21 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = {
     card: {
-        maxWidth: 345,
+        maxWidth: "21vw",
+        minWidth: "300px",
+        height: "100%",
+        display: "flex" as "flex",
+        flexDirection: "column" as "column",
+        justifyContent: "space-between",
+        '&:hover': {
+            boxShadow: "0px 0px 15px 0px rgba(0,0,0,0.65);",
+            transitionDuration: "0.3s"
+        }
     },
     media: {
         height: 0,
-        paddingTop: '56.25%', // 16:9
-    },
+        paddingTop: '75%',
+    }
 };
 
 
@@ -23,7 +32,12 @@ function ImageCard(props: any) {
     const classes = props.classes;
     const imageData = props.props;
     const submitImage = props.submitImage;
-
+    const availabilityStyle = imageData.availability === 'out of stock' ? {
+        fontWeight: "bold" as "bold",
+        color: "#b02639" as "#b02639"
+    } : {
+        fontWeight: "bold" as "bold"
+    };
     return (
         <div style={{
             margin: "20px",
@@ -40,16 +54,24 @@ function ImageCard(props: any) {
                         {imageData.title}
                     </Typography>
                     <Typography component="p">
-                        {imageData.description}
+                            {imageData.description}
+                    </Typography>
+                    <Typography component="p" style={{marginTop: "10px"}}>
+                            Product ID: {imageData.id}
                     </Typography>
                     <Typography component="p">
-                        Product ID: {imageData.id}  Item Group ID: {imageData.itemGroupId}
+                        Item Group ID: {imageData.itemGroupId}
+                    </Typography>
+                    <Typography component="p">
+                        <span style={availabilityStyle}>
+                            Availability: {imageData.availability}
+                        </span>
                     </Typography>
                 </CardContent>
-                <CardActions style={{textAlign: "right"}}>
+                <CardActions style={{textAlign: "right", display: "block"}}>
                     <Button
+                        className={classes.button}
                         size="large"
-                        color="primary"
                         centerRipple
                         onClick={() => {submitImage(imageData)}}
                     >
