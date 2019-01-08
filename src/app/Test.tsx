@@ -48,7 +48,7 @@ export class ImageModal extends React.Component<any, State> {
         const description = imgData.description;
 
         console.log(` id: ${id} \n itemGroupId: ${itemGroupId}, \n imageLink: ${imageLink}`
-                    + `title: ${title} \n description: ${description}`);
+                    + `\n title: ${title} \n description: ${description}`);
     }
 
     componentDidMount () {
@@ -69,7 +69,11 @@ export class ImageModal extends React.Component<any, State> {
 
         const imgThumbs = this.state.imageData && this.state.imageData.map(imgDataObj => {
             return (
-                <ImageCard key={imgDataObj.id} submitImage={(imgData: ImageItem) => {this.handleSubmit(imgData)}} props={imgDataObj}/>
+                <ImageCard
+                    key={imgDataObj.id}
+                    submitImage={(imgData: ImageItem) => {this.handleSubmit(imgData)}}
+                    props={imgDataObj}
+                />
             )
         });
 
