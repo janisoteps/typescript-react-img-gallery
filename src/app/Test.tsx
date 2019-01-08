@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ImageCard from './ImageCard';
 import SearchBox from './SearchBox';
+import Spinner from './Spinner';
 
 interface ImageItem {
     id: number;
@@ -23,10 +24,13 @@ class GetImageData {
     async getData(cid: string, searchTerm: string) {
         console.log(`cid: ${cid}, searchTerm: ${searchTerm}`);
         // http://localhost:9903/v1/products?cid=5af1da5746e0fb000ca0c357&search=T2
+        const searchSlug = searchTerm ? searchTerm.length > 0 ? `&search=${searchTerm}` : '' : '';
+        console.log(`http://hackman.zmags.com:9903/v1/products?cid=${cid}${searchSlug}`);
         let response = await fetch(
-            'http://localhost:3001/products',
+            `http://hackman.zmags.com:9903/v1/products?cid=${cid}${searchSlug}`,
             {
-                method: 'get'
+                method: 'get',
+                mode: 'no-cors'
             });
 
         return await response.json();
@@ -61,8 +65,8 @@ export class ImageModal extends React.Component<any, State> {
     submitSearch (searchString: string) {
         console.log(searchString);
         const getImgData = new GetImageData();
-
-        getImgData.getData(this.state.companyId, searchString).then((data) => {
+        const companyId = this.state.companyId ? this.state.companyId : '5ab004e746e0fb000c52f5bf';
+        getImgData.getData(companyId, searchString).then((data) => {
             this.setState({
                 ...this.state,
                 imageData: data
@@ -81,10 +85,10 @@ export class ImageModal extends React.Component<any, State> {
     componentDidMount () {
         const getImgData = new GetImageData();
         const companyId = window.localStorage.ajs_user_traits
-            ? JSON.parse(window.localStorage.ajs_user_traits).companyId : '';
+            ? JSON.parse(window.localStorage.ajs_user_traits).companyId : '5ab004e746e0fb000c52f5bf';
 
         getImgData.getData(companyId, '').then((data) => {
-            // console.log(data);
+            console.log(data);
             this.setState({
                 ...this.state,
                 imageData: data,
@@ -121,7 +125,7 @@ export class ImageModal extends React.Component<any, State> {
                     justifyContent: "flex-end"
                 }}>
                     {this.state.imageData ? imgThumbs : <div>
-                        Loading...
+                        <Spinner/>
                     </div>}
                 </div>
             </div>
