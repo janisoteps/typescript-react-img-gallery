@@ -80,7 +80,13 @@ class SearchBox extends React.Component<Props, any> {
         const { classes } = this.props;
         const { anchorEl } = this.state;
         return (
-            <form style={{textAlign: "right"}} className={classes.container} noValidate autoComplete="off">
+            <form
+                style={{textAlign: "right"}}
+                className={classes.container}
+                noValidate
+                autoComplete="off"
+                onSubmit={(e) => {this.submitSearch(e, this.state.input)}}
+            >
                 <div>
                     <Button
                         aria-owns={anchorEl ? 'simple-menu' : null}
@@ -122,7 +128,7 @@ class SearchBox extends React.Component<Props, any> {
                     style={{height: "40px", marginTop: "25px"}}
                     variant="outlined"
                     className={classes.button}
-                    onClick={() => {this.submitSearch(this.state.input)}}
+                    type="submit"
                 >
                     Search
                 </Button>

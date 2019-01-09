@@ -50,10 +50,13 @@ function ImageCard(props: any) {
                     title={imageData.title}
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="headline" component="h2">
+                    <Typography gutterBottom variant="headline" component="h4">
                         {imageData.title}
                     </Typography>
-                    <Typography component="p">
+                    <Typography
+                        component="p"
+                        style={{maxHeight: "155px", textOverflow: "ellipsis", overflow: "hidden"}}
+                    >
                             {imageData.description}
                     </Typography>
                     <Typography component="p" style={{marginTop: "10px"}}>

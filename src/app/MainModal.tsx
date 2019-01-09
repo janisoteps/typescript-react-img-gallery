@@ -63,8 +63,9 @@ export class MainModal extends React.Component<any, State> {
                     + `\n title: ${title} \n description: ${description}`);
     }
 
-    submitSearch (searchString: string) {
+    submitSearch (event: any, searchString: string) {
         console.log(searchString);
+        event.preventDefault();
         this.setState({
             ...this.state,
             imageData: null
@@ -94,8 +95,8 @@ export class MainModal extends React.Component<any, State> {
 
         getImgData.getData(companyId, '').then((data) => {
             console.log(data);
-            if (data.length > 200) {
-                data = data.slice(0, 200)
+            if (data.length > 100) {
+                data = data.slice(0, 100)
             }
             this.setState({
                 ...this.state,
@@ -124,7 +125,7 @@ export class MainModal extends React.Component<any, State> {
         return (
             <div>
                 <SearchBox
-                    submitSearch={(searchString: string) => {this.submitSearch(searchString)}}
+                    submitSearch={(event: any, searchString: string) => {this.submitSearch(event, searchString)}}
                     changeFilter={(filter: string) => {this.changeFilter(filter)}}
                 />
                 <div style={{
